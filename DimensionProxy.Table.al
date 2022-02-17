@@ -1,6 +1,7 @@
 table 50110 "PTE Dimension Value Proxy"
 {
     TableType = Temporary;
+    LookupPageId = "PTE Dimension Value List";
     //    DataClassification = ToBeClassified;
 
     fields

@@ -95,7 +95,7 @@ page 50110 "PTE Dimension Value List"
         DimVal: Record "Dimension Value";
     begin
         if Rec.GetFilter(Company) = '' then begin
-            DimVal.SetRange("Dimension Code", Rec.GetFilter("Dimension Code"));
+            DimVal.SetFilter("Global Dimension No.", Rec.GetFilter("Global Dimension No."));
             if DimVal.FindSet() then
                 repeat
                     Rec."Dimension Code" := DimVal."Dimension Code";
