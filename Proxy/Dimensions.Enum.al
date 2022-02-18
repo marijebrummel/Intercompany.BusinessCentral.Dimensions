@@ -1,4 +1,4 @@
-enum 50110 "PTE Intercompany Dimensions" implements "PTE Intercompany Dimensions"
+enum 50110 "PTE Intercompany Dimension" implements "PTE Intercompany Dimensions"
 {
     Extensible = true;
     value(0; "Change Company")

@@ -92,17 +92,10 @@ page 50110 "PTE Dimension Value List"
 
     local procedure GetDimensions()
     var
-        DimVal: Record "Dimension Value";
+        IntercompanyDim: Interface "PTE Intercompany Dimensions";
     begin
-        if Rec.GetFilter(Company) = '' then begin
-            DimVal.SetFilter("Global Dimension No.", Rec.GetFilter("Global Dimension No."));
-            if DimVal.FindSet() then
-                repeat
-                    Rec."Dimension Code" := DimVal."Dimension Code";
-                    Rec.Code := DimVal.Code;
-                    Rec.Insert();
-                until DimVal.Next() = 0;
-        end;
+        IntercompanyDim := "PTE Intercompany Dimension"::"Change Company";
+        IntercompanyDim.GetDimensions(Rec);
     end;
 
     procedure GetSelectionFilter(): Text

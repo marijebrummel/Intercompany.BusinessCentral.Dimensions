@@ -7,7 +7,8 @@ tableextension 50102 "PTE Purchase Line" extends "Purchase Line"
         {
             CaptionClass = '1,2,1';
             Caption = 'Shortcut Dimension 1 Code';
-            TableRelation = "PTE Dimension Value Proxy".Code WHERE("Global Dimension No." = CONST(1), Blocked = CONST(false));
+            TableRelation = "PTE Dimension Value Proxy".Code WHERE("Global Dimension No." = CONST(1),
+                Blocked = CONST(false), Company = field("PTE Receiving Company"));
 
             trigger OnValidate()
             begin
@@ -18,7 +19,8 @@ tableextension 50102 "PTE Purchase Line" extends "Purchase Line"
         {
             CaptionClass = '1,2,2';
             Caption = 'Shortcut Dimension 2 Code';
-            TableRelation = "PTE Dimension Value Proxy".Code WHERE("Global Dimension No." = CONST(2), Blocked = CONST(false));
+            TableRelation = "PTE Dimension Value Proxy".Code WHERE("Global Dimension No." = CONST(2),
+                Blocked = CONST(false), Company = field("PTE Receiving Company"));
 
             trigger OnValidate()
             begin
