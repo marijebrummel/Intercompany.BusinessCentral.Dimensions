@@ -79,9 +79,11 @@ page 50110 "PTE Dimension Value List"
 
     local procedure GetDimensions()
     var
+        ICDimensionSetup: Record "PTE IC Dimension Setup";
         IntercompanyDim: Interface "PTE Intercompany Dimensions";
     begin
-        IntercompanyDim := "PTE Intercompany Dimension"::Dataverse;
+        ICDimensionSetup.Get();
+        IntercompanyDim := ICDimensionSetup."Intercompany Dimension";
         IntercompanyDim.GetDimensions(Rec);
     end;
 
