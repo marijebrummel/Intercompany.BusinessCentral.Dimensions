@@ -1,7 +1,7 @@
 page 50110 "PTE Dimension Value List"
 {
     Caption = 'Dimension Value List';
-    DataCaptionExpression = GetFormCaption;
+    DataCaptionExpression = GetPageCaption;
     Editable = false;
     PageType = List;
     SourceTable = "PTE Dimension Value Proxy";
@@ -55,19 +55,6 @@ page 50110 "PTE Dimension Value List"
                 }
             }
         }
-        area(factboxes)
-        {
-            systempart(Control1900383207; Links)
-            {
-                ApplicationArea = RecordLinks;
-                Visible = false;
-            }
-            systempart(Control1905767507; Notes)
-            {
-                ApplicationArea = Notes;
-                Visible = false;
-            }
-        }
     }
 
     trigger OnAfterGetRecord()
@@ -94,7 +81,7 @@ page 50110 "PTE Dimension Value List"
     var
         IntercompanyDim: Interface "PTE Intercompany Dimensions";
     begin
-        IntercompanyDim := "PTE Intercompany Dimension"::"Change Company";
+        IntercompanyDim := "PTE Intercompany Dimension"::Dataverse;
         IntercompanyDim.GetDimensions(Rec);
     end;
 
@@ -112,7 +99,7 @@ page 50110 "PTE Dimension Value List"
         CurrPage.SetSelectionFilter(DimVal);
     end;
 
-    local procedure GetFormCaption(): Text[250]
+    local procedure GetPageCaption(): Text[250]
     begin
         if Rec.GetFilter("Dimension Code") <> '' then
             exit(Rec.GetFilter("Dimension Code"));
