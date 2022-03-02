@@ -16,6 +16,11 @@ codeunit 50120 "PTE Dimensions Change Company" implements "PTE Intercompany Dime
             until DimVal.Next() = 0;
     end;
 
+    procedure CreateICPosting(var ICPosting: Record "PTE IC Posting");
+    begin
+        Codeunit.Run(Codeunit::"PTE Intercompany Posting", ICPosting)
+    end;
+
     local procedure HasCompanyFilter(var Proxy: Record "PTE Dimension Value Proxy"): Boolean
     begin
         if Proxy.GetFilter(Company) = '''' then

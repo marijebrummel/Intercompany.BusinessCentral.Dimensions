@@ -4,4 +4,9 @@ codeunit 50121 "PTE Dimensions BC API" implements "PTE Intercompany Dimensions"
     begin
         Message('Business Central API');
     end;
+
+    procedure CreateICPosting(var ICPosting: Record "PTE IC Posting");
+    begin
+
+    end;
 }

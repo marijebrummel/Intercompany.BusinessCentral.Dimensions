@@ -11,8 +11,13 @@ tableextension 50102 "PTE Purchase Line" extends "Purchase Line"
                 Blocked = CONST(false), Company = field("PTE Receiving Company"));
 
             trigger OnValidate()
+            var
+                EmptyDimCode: Code[20];
             begin
-                ValidateShortcutDimCode(1, "PTE Shortcut Dimension 1 Code");
+                if "PTE Receiving Company" = '' then
+                    ValidateShortcutDimCode(1, "PTE Shortcut Dimension 1 Code")
+                else
+                    ValidateShortcutDimCode(1, EmptyDimCode);
             end;
         }
         field(50141; "PTE Shortcut Dimension 2 Code"; Code[20])
@@ -23,8 +28,13 @@ tableextension 50102 "PTE Purchase Line" extends "Purchase Line"
                 Blocked = CONST(false), Company = field("PTE Receiving Company"));
 
             trigger OnValidate()
+            var
+                EmptyDimCode: Code[20];
             begin
-                ValidateShortcutDimCode(2, "PTE Shortcut Dimension 2 Code");
+                if "PTE Receiving Company" = '' then
+                    ValidateShortcutDimCode(2, "PTE Shortcut Dimension 2 Code")
+                else
+                    ValidateShortcutDimCode(2, EmptyDimCode);
             end;
         }
     }

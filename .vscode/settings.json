@@ -3,5 +3,5 @@
 	"al.codeAnalyzers": [
 		"${PerTenantExtensionCop}"
 	],
-	"al.enableCodeAnalysis": true
+	"al.enableCodeAnalysis": false
 }
