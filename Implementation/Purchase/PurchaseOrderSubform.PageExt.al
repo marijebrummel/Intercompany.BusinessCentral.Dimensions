@@ -17,4 +17,22 @@ pageextension 50102 "PTE Purch. Order Subform" extends "Purchase Order Subform"
             field("PTE Shortcut Dimension 2 Code"; Rec."PTE Shortcut Dimension 2 Code") { ApplicationArea = All; }
         }
     }
+    actions
+    {
+        addfirst(processing)
+        {
+            action("PTE Dimensions")
+            {
+                Caption = 'Dimensions (Intercompany)';
+                Image = Dimensions;
+                trigger OnAction()
+                var
+                    DimensionSet: Record "PTE Dimension Set";
+                begin
+                    DimensionSet.SetRange("Record Id", Rec.RecordId);
+                    Page.RunModal(0, DimensionSet);
+                end;
+            }
+        }
+    }
 }
