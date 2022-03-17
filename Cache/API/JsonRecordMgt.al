@@ -82,4 +82,61 @@ codeunit 50125 "PTE Json Record Mgt."
                 end;
         end;
     end;
+
+    local procedure SaveData(TableId: Integer; jsonresult: JsonObject)
+    var
+        RecRef: RecordRef;
+    // DataList: JsonArray;
+    // Data: JsonToken;
+    begin
+        RecRef.Open(TableId, true);
+        // RecRef.Open(TableId);
+
+        // Clear(Data);
+        // foreach Data in jsonresult.Values do
+        SaveRecordRef(RecRef, jsonresult);
+        Message(Format(RecRef));
+    end;
+
+    local procedure SaveRecordRef(var RecRef: RecordRef; DataObject: JsonObject)
+    var
+        Fld: Record Field;
+        FldRef: FieldRef;
+        DataField: JsonToken;
+        MyValue: JsonValue;
+        MyKey: Text;
+    begin
+        // DataObject := Data.AsObject();
+        RecRef.Init();
+        Fld.SetRange(TableNo, RecRef.Number);
+        Fld.SetRange(Class, Fld.Class::Normal);
+        Fld.SetRange(ObsoleteState, Fld.ObsoleteState::No);
+
+        foreach MyKey in DataObject.Keys do begin
+            DataObject.Get(MyKey, DataField);
+            MyValue := DataField.AsValue();
+            Fld.SetRange(FieldName, MyKey);
+            if Fld.FindFirst() then begin
+                FldRef := RecRef.Field(Fld."No.");
+                case FldRef.Type of
+                    FldRef.Type::Boolean:
+                        FldRef.Value(MyValue.AsBoolean());
+                    FldRef.Type::Option, FldRef.Type::Integer, FldRef.Type::BigInteger:
+                        FldRef.Value(MyValue.AsBigInteger());
+                    FldRef.Type::Text, FldRef.Type::Code:
+                        FldRef.Value(MyValue.AsText());
+                    FldRef.Type::Decimal:
+                        FldRef.Value(MyValue.AsDecimal());
+                    FldRef.Type::Date:
+                        FldRef.Value(MyValue.AsDate());
+                    FldRef.Type::DateTime:
+                        FldRef.Value(MyValue.AsDateTime());
+                    FldRef.Type::Time:
+                        FldRef.Value(MyValue.AsTime());
+                end;
+            end;
+        end;
+        if RecRef.Insert() then;
+    end;
+
 }
