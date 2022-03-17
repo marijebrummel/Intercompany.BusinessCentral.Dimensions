@@ -1,10 +1,9 @@
 codeunit 50125 "PTE Json Record Mgt."
 {
     Access = Internal;
-    procedure GetDataAsJson(RecordToJson: Record "PTE Record to Json"; var Data: JsonArray): Text
+    procedure GetDataAsJson(var RecRef: RecordRef): JsonObject
     var
         Fld: Record Field;
-        RecRef: RecordRef;
         FldRef: FieldRef;
         DataSet: JsonObject;
         Result: JsonObject;
@@ -14,13 +13,11 @@ codeunit 50125 "PTE Json Record Mgt."
         i: Integer;
     begin
         StartingDateTime := CurrentDateTime;
-        RecRef.Open(RecordToJson.TableID);
-        RecRef.SetView(RecordToJson.SourceTableView);
         if RecRef.FindSet() then
             repeat
                 i += 1;
                 Clear(Result);
-                Fld.SetRange(TableNo, RecordToJson.TableID);
+                Fld.SetRange(TableNo, RecRef.RecordId.TableNo);
                 Fld.SetRange(ObsoleteState, Fld.ObsoleteState::No);
                 fld.SetRange("No.", 1, 2000000000 - 1);
                 fld.SetRange(Class, Fld.Class::Normal);
@@ -34,8 +31,7 @@ codeunit 50125 "PTE Json Record Mgt."
                 FldRef := RecRef.Field(1);
                 Result.Add('id', format(GetFieldValue(FldRef)));
             until RecRef.Next() = 0;
-        Data.Add(Result);
-        exit(format(GetFieldValue(FldRef)));
+        exit(Result);
     end;
 
     local procedure GetFieldValue(var FldRef: FieldRef) Value: JsonValue
