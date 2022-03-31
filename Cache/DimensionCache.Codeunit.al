@@ -5,12 +5,16 @@ codeunit 50111 "PTE Dimension Proxy Cache"
     procedure SetCache(var DimensionProxy: Record "PTE Dimension Value Proxy")
     var
         JsonRecMgt: Codeunit "PTE Json Record Mgt.";
+        Proxy: Record "PTE Dimension Value Proxy";
     begin
         ClearCache();
         if DimensionProxy.FindSet() then
             repeat
-                DimensionCache.Add(DimensionProxy.RecordId, JsonRecMgt.GetDataAsJson(DimensionProxy))
-        until DimensionProxy.Next() = 0;
+                Proxy := DimensionProxy;
+                Proxy.Insert();
+                DimensionCache.Add(DimensionProxy.RecordId, JsonRecMgt.GetDataAsJson(Proxy));
+                Proxy.Delete();
+            until DimensionProxy.Next() = 0;
         CacheTimeStamp := CurrentDateTime;
     end;
 
