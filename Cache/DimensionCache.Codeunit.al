@@ -22,7 +22,8 @@ codeunit 50111 "PTE Dimension Proxy Cache"
         if not CacheValid() then
             exit(false);
         foreach CachedRecord in DimensionCache.Values do begin
-            JsonRecMgt.SaveData(DimensionProxy, CachedRecord);
+            DimensionProxy := JsonRecMgt.SaveData(CachedRecord);
+            if DimensionProxy.Insert() then;
         end;
     end;
 

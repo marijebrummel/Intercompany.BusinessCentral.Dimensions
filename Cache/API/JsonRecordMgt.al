@@ -86,7 +86,7 @@ codeunit 50125 "PTE Json Record Mgt."
         end;
     end;
 
-    procedure SaveData(var DimensionProxy: Record "PTE Dimension Value Proxy"; jsonresult: JsonObject)
+    procedure SaveData(jsonresult: JsonObject) DimensionProxy: Record "PTE Dimension Value Proxy"
     var
         RecRef: RecordRef;
     begin
