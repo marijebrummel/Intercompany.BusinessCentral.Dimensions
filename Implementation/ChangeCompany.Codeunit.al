@@ -3,7 +3,13 @@ codeunit 50120 "PTE Dimensions Change Company" implements "PTE Intercompany Dime
     procedure GetDimensions(var Proxy: Record "PTE Dimension Value Proxy")
     var
         DimVal: Record "Dimension Value";
+        Cache: Codeunit "PTE Dimension Proxy Cache";
     begin
+        if Cache.CacheValid() then begin
+            Cache.GetCache(Proxy);
+            exit;
+        end;
+
         if HasCompanyFilter(Proxy) then
             DimVal.ChangeCompany(Proxy.Company);
 
@@ -12,8 +18,11 @@ codeunit 50120 "PTE Dimensions Change Company" implements "PTE Intercompany Dime
             repeat
                 Proxy."Dimension Code" := DimVal."Dimension Code";
                 Proxy.Code := DimVal.Code;
+                Proxy.Blocked := DimVal.Blocked;
+                Proxy.Name := DimVal.Name;
                 Proxy.Insert();
             until DimVal.Next() = 0;
+        Cache.SetCache(Proxy);
     end;
 
     procedure CreateICPosting(var ICPosting: Record "PTE IC Posting");

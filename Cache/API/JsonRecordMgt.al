@@ -1,8 +1,9 @@
 codeunit 50125 "PTE Json Record Mgt."
 {
     Access = Internal;
-    procedure GetDataAsJson(var RecRef: RecordRef): JsonObject
+    procedure GetDataAsJson(var DimensionProxy: Record "PTE Dimension Value Proxy"): JsonObject
     var
+        RecRef: RecordRef;
         Fld: Record Field;
         FldRef: FieldRef;
         DataSet: JsonObject;
@@ -12,6 +13,8 @@ codeunit 50125 "PTE Json Record Mgt."
         StartingDateTime: DateTime;
         i: Integer;
     begin
+        RecRef.Open(DimensionProxy.RecordId.TableNo, true);
+        RecRef.Copy(DimensionProxy, true);
         StartingDateTime := CurrentDateTime;
         if RecRef.FindSet() then
             repeat
@@ -83,19 +86,13 @@ codeunit 50125 "PTE Json Record Mgt."
         end;
     end;
 
-    local procedure SaveData(TableId: Integer; jsonresult: JsonObject)
+    procedure SaveData(var DimensionProxy: Record "PTE Dimension Value Proxy"; jsonresult: JsonObject)
     var
         RecRef: RecordRef;
-    // DataList: JsonArray;
-    // Data: JsonToken;
     begin
-        RecRef.Open(TableId, true);
-        // RecRef.Open(TableId);
-
-        // Clear(Data);
-        // foreach Data in jsonresult.Values do
+        RecRef.Open(DimensionProxy.RecordId.TableNo, true);
         SaveRecordRef(RecRef, jsonresult);
-        Message(Format(RecRef));
+        RecRef.SetTable(DimensionProxy);
     end;
 
     local procedure SaveRecordRef(var RecRef: RecordRef; DataObject: JsonObject)
@@ -106,7 +103,6 @@ codeunit 50125 "PTE Json Record Mgt."
         MyValue: JsonValue;
         MyKey: Text;
     begin
-        // DataObject := Data.AsObject();
         RecRef.Init();
         Fld.SetRange(TableNo, RecRef.Number);
         Fld.SetRange(Class, Fld.Class::Normal);
@@ -136,7 +132,7 @@ codeunit 50125 "PTE Json Record Mgt."
                 end;
             end;
         end;
-        if RecRef.Insert() then;
+        RecRef.Insert();
     end;
 
 }
